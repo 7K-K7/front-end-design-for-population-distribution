@@ -19,7 +19,7 @@
             <div class="dibu"></div>
             <div class="flex">
               <div class="info">
-                <span class="labels">设备ID：</span>
+                <span class="labels">区域ID：</span>
                 <span class="contents zhuyao doudong wangguan">
                   {{ item.gatewayno }}</span
                 >

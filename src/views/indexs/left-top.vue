@@ -11,26 +11,26 @@
             <div class="user_Overview_nums allnum ">
                 <dv-digital-flop :config="config" style="width:100%;height:100%;" />
             </div>
-            <p>总设备数</p>
+            <p>总人口数</p>
         </li>
         <li class="user_Overview-item" style="color: #07f7a8">
             <div class="user_Overview_nums online">
                 <dv-digital-flop :config="onlineconfig" style="width:100%;height:100%;" />
             </div>
-            <p>在线数</p>
+            <p>受教育程度</p>
         </li>
         <li class="user_Overview-item" style="color: #e3b337">
             <div class="user_Overview_nums offline">
                 <dv-digital-flop :config="offlineconfig" style="width:100%;height:100%;" />
 
             </div>
-            <p>掉线数</p>
+            <p>人口密度</p>
         </li>
         <li class="user_Overview-item" style="color: #f5023d">
             <div class="user_Overview_nums laramnum">
                 <dv-digital-flop :config="laramnumconfig" style="width:100%;height:100%;" />
             </div>
-            <p>告警次数</p>
+            <p>人口增长</p>
         </li>
     </ul>
     <Reacquire v-else @onclick="getData" line-height="200px">
@@ -119,7 +119,7 @@ export default {
             this.pageflag = true;
             currentGET("big2").then((res) => {
                 if (!this.timer) {
-                    console.log("设备总览", res);
+                    console.log("人口总览", res);
                 }
                 if (res.success) {
                     this.userOverview = res.data;

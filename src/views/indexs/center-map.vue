@@ -32,7 +32,7 @@ import { GETNOBASE } from "api";
 export default {
   data() {
     return {
-      maptitle: "设备分布图",
+      maptitle: "中国人口分布图",
       options: {},
       code: "china", //china 代表中国 其他地市是行政编码
       echartBindClick: false,
@@ -48,7 +48,7 @@ export default {
   methods: {
     getData(code) {
       currentGET("big8", { regionCode: code }).then((res) => {
-        console.log("设备分布", res);
+        console.log("中国人口分布", res);
         if (res.success) {
           this.getGeojson(res.data.regionCode, res.data.dataList);
           this.mapclick();

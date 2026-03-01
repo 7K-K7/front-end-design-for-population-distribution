@@ -51,7 +51,7 @@ export default {
       currentGET('big1').then(res => {
         //只打印一次
         if (!this.timer) {
-          console.log("设备总览", res);
+          console.log("人口总览", res);
         }
         if (res.success) {
           this.countUserNumData = res.data
@@ -89,7 +89,7 @@ export default {
       let total = this.countUserNumData.totalNum;
       let colors = ["#ECA444", "#33A1DB", "#56B557"];
       let piedata = {
-        name: "用户总览",
+        name: "男女比例",
         type: "pie",
         radius: ["42%", "65%"],
         avoidLabelOverlap: false,
@@ -108,23 +108,23 @@ export default {
           //     shadowColor: colors[0],
           //   },
           // },
-          {
-            value: this.countUserNumData.lockNum,
-            name: "锁定",
-            label: {
-              shadowColor: colors[0],
-            },
-          },
+          // {
+          //   value: this.countUserNumData.lockNum,
+          //   name: "锁定",
+          //   label: {
+          //     shadowColor: colors[0],
+          //   },
+          // },
           {
             value: this.countUserNumData.onlineNum,
-            name: "在线",
+            name: "女性",
             label: {
               shadowColor: colors[2],
             },
           },
           {
             value: this.countUserNumData.offlineNum,
-            name: "离线",
+            name: "男性",
             label: {
               shadowColor: colors[1],
             },

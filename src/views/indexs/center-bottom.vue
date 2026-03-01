@@ -76,7 +76,7 @@ export default {
           },
         },
         legend: {
-          data: ["已安装", "计划安装", "安装率"],
+          data: ["老年人", "中老年人", "老年化趋势"],
           textStyle: {
             color: "#B4B4B4",
           },
@@ -126,7 +126,7 @@ export default {
         ],
         series: [
           {
-            name: "已安装",
+            name: "老年人",
             type: "bar",
             barWidth: 10,
             itemStyle: {
@@ -139,7 +139,7 @@ export default {
             data: newData.barData,
           },
           {
-            name: "计划安装",
+            name: "中老年人",
             type: "bar",
             barGap: "-100%",
             barWidth: 10,
@@ -155,7 +155,7 @@ export default {
             data: newData.lineData,
           },
           {
-            name: "安装率",
+            name: "老年化趋势",
             type: "line",
             smooth: true,
             showAllSymbol: true,
