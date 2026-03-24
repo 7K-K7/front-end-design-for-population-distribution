@@ -6,6 +6,7 @@
  * @FilePath: \web-pc\src\api\modules\index.js
  */
 import * as API from "../api";
+import store from "../../store";
 
 export const paramType ={
     'big1':"/bigscreen/countUserNum", //用户总览
@@ -74,6 +75,11 @@ export const currentPage =  (key,param)=> {
  * @param {*} param 
  */
  export const currentGET=  (key,param)=> {
+    // 添加地区参数
+    if (!param) param = {};
+    if (store.state.region && store.state.region.currentRegion) {
+      param.regionCode = store.state.region.currentRegion.code;
+    }
     return API.GET(paramType[key], param)
 }
 /**

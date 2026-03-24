@@ -50,14 +50,11 @@ export default {
       this.pageflag = true;
       // this.pageflag =false
       currentGET("big4").then((res) => {
-        if (!this.timer) {
-          console.log("报警次数", res);
-        }
+        console.log("报警次数", res);
         if (res.success) {
           this.countUserNumData = res.data;
           this.$nextTick(() => {
-            this.init(res.data.dateList, res.data.numList, res.data.numList2),
-              this.switper();
+            this.init(res.data.dateList, res.data.numList, res.data.numList2);
           });
         } else {
           this.pageflag = false;
@@ -66,29 +63,6 @@ export default {
             type: "warning",
           });
         }
-      });
-    },
-    //轮询
-    switper() {
-      if (this.timer) {
-        return;
-      }
-      let looper = (a) => {
-        this.getData();
-      };
-      this.timer = setInterval(
-        looper,
-        this.$store.state.setting.echartsAutoTime
-      );
-      let myChart = this.$refs.charts.chart;
-      myChart.on("mouseover", (params) => {
-        this.clearData();
-      });
-      myChart.on("mouseout", (params) => {
-        this.timer = setInterval(
-          looper,
-          this.$store.state.setting.echartsAutoTime
-        );
       });
     },
     init(xData, yData, yData2) {
@@ -156,7 +130,7 @@ export default {
             type: "line",
             smooth: true,
             symbol: "none", //去除点
-            name: "报警1次数",
+            name: "当前人口密度",
             color: "rgba(252,144,16,.7)",
             areaStyle: {
                 //右，下，左，上

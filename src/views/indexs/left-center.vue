@@ -49,10 +49,7 @@ export default {
       // this.pageflag =false
 
       currentGET('big1').then(res => {
-        //只打印一次
-        if (!this.timer) {
-          console.log("人口总览", res);
-        }
+        console.log("人口总览", res);
         if (res.success) {
           this.countUserNumData = res.data
           this.$nextTick(() => {
@@ -67,23 +64,6 @@ export default {
           })
         }
       })
-    },
-    //轮询
-    switper() {
-      if (this.timer) {
-        return
-      }
-      let looper = (a) => {
-        this.getData()
-      };
-      this.timer = setInterval(looper, this.$store.state.setting.echartsAutoTime);
-      let myChart = this.$refs.charts.chart
-      myChart.on('mouseover', params => {
-        this.clearData()
-      });
-      myChart.on('mouseout', params => {
-        this.timer = setInterval(looper, this.$store.state.setting.echartsAutoTime);
-      });
     },
     init() {
       let total = this.countUserNumData.totalNum;

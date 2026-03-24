@@ -36,36 +36,17 @@ export default {
     this.clearData()
   },
   methods: {
-    clearData() {
-      if (this.timer) {
-        clearInterval(this.timer)
-        this.timer = null
-      }
-    },
-    //轮询
-    switper() {
-      if (this.timer) {
-        return
-      }
-      let looper = (a) => {
-        this.getData()
-      };
-      this.timer = setInterval(looper, this.$store.state.setting.echartsAutoTime);
-    },
     getData() {
       this.pageflag = true
       // this.pageflag =false
       currentGET('big7', { gatewayno: this.gatewayno }).then(res => {
 
-        if (!this.timer) {
-          console.log('报警排名', res);
-        }
+        console.log('报警排名', res);
         if (res.success) {
           this.config = {
             ...this.config,
             data: res.data
           }
-          this.switper()
         } else {
           this.pageflag = false
           this.srcList = []

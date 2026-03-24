@@ -5,43 +5,64 @@ Mock.setup({
 })
 
 const Random = Mock.Random;
-// 用户总览
-function countUserNum() {
+// 用户总览     男女比例
+function countUserNum(options) {
+    let params = parameteUrl(options.url);
+    let regionCode = params.regionCode || 'china';
+    
     const a = Mock.mock({
         success: true,
         data: {
-            offlineNum:'@integer(1, 100)',
-            lockNum: '@integer(1, 10)',
-            totalNum:218
+            offlineNum: '@integer(45, 55)',     //男性
+            lockNum: 50,                    //原锁定
+            onlineNum: '@integer(45, 55)'   //女性
+                
+
         }
     })
-    a.data.onlineNum=a.data.totalNum-a.data.offlineNum-a.data.lockNum
+    // a.data.onlineNum=a.data.totalNum-a.data.offlineNum-a.data.lockNum 
+    a.data.totalNum = a.data.offlineNum + a.data.onlineNum   //总人数
     return a
 }
 
 // 接口，第一个参数url，第二个参数请求类型，第三个参数响应回调
 Mock.mock(new RegExp('countUserNum'), 'get', countUserNum)
 
-// /设备总览 
+// /设备总览    人口总览
 
-function countDeviceNum() {
+function countDeviceNum(options) {
+    let params = parameteUrl(options.url);
+    let regionCode = params.regionCode || 'china';
+    
+    // 根据地区生成不同范围的数据
+    let totalNum, alarmNum, offlineNum;
+    if (regionCode === 'china') {
+        totalNum = 698;
+        alarmNum = '@integer(100, 1000)';
+        offlineNum = '@integer(0, 50)';
+    } else {
+        // 省份数据范围
+        totalNum = '@integer(100, 300)';
+        alarmNum = '@integer(50, 200)';
+        offlineNum = '@integer(5, 20)';
+    }
+    
     const a = Mock.mock({
         success: true,
         data: {
-            alarmNum: '@integer(100, 1000)',
-            offlineNum: '@integer(0, 50)',
-            totalNum:698
+            alarmNum,
+            offlineNum,
+            totalNum
         }
     })
-    a.data.onlineNum=a.data.totalNum-a.data.offlineNum
-
+    a.data.onlineNum = a.data.totalNum - a.data.offlineNum
 
     return a
 }
 
 Mock.mock(new RegExp('countDeviceNum'), 'get', countDeviceNum)
 
-// /设备总览 
+// /设备总览    人口总览
 
 function sbtx() {
     const a = Mock.mock({
@@ -106,19 +127,28 @@ function centermap(options) {
 
 Mock.mock(new RegExp('centermap'), 'get', centermap)
 
-// 报警次数
+// 报警次数    人口密度变化
 
-function alarmNum() {
+function alarmNum(options) {
+    let params = parameteUrl(options.url);
+    let regionCode = params.regionCode || 'china';
+    
+    // 根据地区生成不同范围的数据
+    let numRange = regionCode === 'china' ? [0, 1000] : [0, 500];
+    
     const a = Mock.mock({
         success: true,
         data: {
-            dateList:['2021-11', '2021-12', '2022-01', '2022-02', '2022-03',"2022-04"],
+            dateList:['2025-11', '2025-12', '2026-01', '2026-02', '2026-03',"2026-04"],
             "numList|6":[
-                '@integer(0, 1000)'
+                '@integer(' + numRange[0] + ', ' + numRange[1] + ')'
             ],
-            "numList2|6":[
-                '@integer(0, 1000)'
-            ]
+            // "numList2|6":[
+            //     '@integer(0, 1000)'
+            // ],
+            // "numList3|6":[
+            //     '@integer(0, 1000)'
+            // ]
         }
     })
     return a
@@ -151,7 +181,7 @@ function ssyj() {
     return a
 }
 Mock.mock(new RegExp('ssyj'), 'get', ssyj)
-//安装计划 
+//安装计划    人口老龄化
 function installationPlan() {
     let num=  RandomNumBoth(26,32);
     const a = Mock.mock({
@@ -177,10 +207,16 @@ Mock.mock(new RegExp('installationPlan'), 'get', installationPlan)
 
 
 
-//报警排名 
-function ranking() {
+//报警排名   人口排名
+function ranking(options) {
+    let params = parameteUrl(options.url);
+    let regionCode = params.regionCode || 'china';
+    
+    // 根据地区生成不同范围的数据
+    let valueRange = regionCode === 'china' ? [50, 1000] : [10, 500];
+   
    //多生成几个避免重复 重复会报错
-  let num =Mock.mock({"list|48":[{ value:"@integer(50,1000)",name:"@city()"}]}).list
+  let num =Mock.mock({"list|48":[{ value:"@integer(" + valueRange[0] + ", " + valueRange[1] + ")",name:"@city()"}]}).list
 //   console.log(num);
   let newNum =[],numObj={}
   num.map(item=>{

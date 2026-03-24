@@ -35,7 +35,6 @@ export default {
       maptitle: "中国人口分布图",
       options: {},
       code: "china", //china 代表中国 其他地市是行政编码
-      echartBindClick: false,
       isSouthChinaSea: false, //是否要展示南海群岛  修改此值请刷新页面
     };
   },
@@ -50,8 +49,16 @@ export default {
       currentGET("big8", { regionCode: code }).then((res) => {
         console.log("中国人口分布", res);
         if (res.success) {
-          this.getGeojson(res.data.regionCode, res.data.dataList);
+          // 更新Vuex中的地区信息
+          this.$store.dispatch('region/updateRegion', {
+            code: code === 'china' ? 'china' : res.data.regionCode,
+            name: code === 'china' ? '中国' : (res.data.dataList[0] && res.data.dataList[0].name) || '未知地区'
+          });
+          // 直接使用传入的code，确保点击中国按钮时加载全国地图
+          this.getGeojson(code, res.data.dataList);
           this.mapclick();
+          // 通知其他组件更新数据
+          this.$emit('regionChange');
         } else {
           this.$Message.warning(res.msg);
         }
@@ -291,18 +298,36 @@ export default {
       });
     },
     mapclick() {
-      if (this.echartBindClick) return;
-      //单击切换到级地图，当mapCode有值,说明可以切换到下级地图
-      this.$refs.CenterMap.chart.on("click", (params) => {
-        // console.log(params);
-        let xzqData = xzqCode[params.name];
-        if (xzqData) {
-          this.getData(xzqData.adcode);
-        } else {
-          this.message("暂无下级地市!");
-        }
-      });
-      this.echartBindClick = true;
+      // 每次调用时都重新绑定点击事件
+      if (this.$refs.CenterMap && this.$refs.CenterMap.chart) {
+        // 先解绑之前的点击事件
+        this.$refs.CenterMap.chart.off("click");
+        // 重新绑定点击事件
+        this.$refs.CenterMap.chart.on("click", (params) => {
+          // console.log(params);
+          let xzqData = xzqCode[params.name];
+          if (xzqData) {
+            // 更新Vuex中的地区信息
+            this.$store.dispatch('region/updateRegion', {
+              code: xzqData.adcode,
+              name: params.name
+            });
+            this.getData(xzqData.adcode);
+            // 通知其他组件更新数据
+            this.$emit('regionChange');
+          } else {
+            // 即使没有下级地图，也要更新数据
+            // 更新Vuex中的地区信息
+            this.$store.dispatch('region/updateRegion', {
+              code: 'city_' + params.name,
+              name: params.name
+            });
+            // 通知其他组件更新数据
+            this.$emit('regionChange');
+            this.message("暂无下级地市!");
+          }
+        });
+      }
     },
   },
 };

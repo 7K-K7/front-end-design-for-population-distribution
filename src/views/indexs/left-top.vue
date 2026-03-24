@@ -118,9 +118,7 @@ export default {
         getData() {
             this.pageflag = true;
             currentGET("big2").then((res) => {
-                if (!this.timer) {
-                    console.log("人口总览", res);
-                }
+                console.log("人口总览", res);
                 if (res.success) {
                     this.userOverview = res.data;
                     this.onlineconfig = {
@@ -139,22 +137,11 @@ export default {
                         ...this.laramnumconfig,
                         number: [res.data.alarmNum]
                     }
-                    this.switper()
                 } else {
                     this.pageflag = false;
                     this.$Message.warning(res.msg);
                 }
             });
-        },
-        //轮询
-        switper() {
-            if (this.timer) {
-                return
-            }
-            let looper = (a) => {
-                this.getData()
-            };
-            this.timer = setInterval(looper, this.$store.state.setting.echartsAutoTime);
         },
     },
 };

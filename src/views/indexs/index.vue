@@ -13,24 +13,24 @@
         
       </div>
       <ItemWrap class="contetn_left-top contetn_lr-item" title="人口总览">
-        <LeftTop/>
+        <LeftTop ref="leftTop"/>
     
       </ItemWrap>
       <ItemWrap class="contetn_left-center contetn_lr-item" title="男女比例">
-        <LeftCenter />
+        <LeftCenter ref="leftCenter" />
       </ItemWrap>
       <ItemWrap
         class="contetn_left-bottom contetn_lr-item"
         title="信息更新提醒"
         style="padding: 0 10px 16px 10px"
       >
-        <LeftBottom />
+        <LeftBottom ref="leftBottom" />
       </ItemWrap>
     </div>
     <div class="contetn_center">
-      <CenterMap class="contetn_center_top" />
+      <CenterMap class="contetn_center_top" @regionChange="handleRegionChange" />
       <ItemWrap class="contetn_center-bottom" title="人口老龄化">
-        <CenterBottom />
+        <CenterBottom ref="centerBottom" />
       </ItemWrap>
     </div>
     <div class="contetn_right">
@@ -38,20 +38,20 @@
         class="contetn_left-bottom contetn_lr-item"
         title="人口密度变化"
       >
-        <RightTop />
+        <RightTop ref="rightTop" />
       </ItemWrap>
       <ItemWrap
         class="contetn_left-bottom contetn_lr-item"
         title="人口排名(TOP8)"
         style="padding: 0 10px 16px 10px"
       >
-        <RightCenter />
+        <RightCenter ref="rightCenter" />
       </ItemWrap>
       <ItemWrap
         class="contetn_left-bottom contetn_lr-item"
         title="数据统计图 "
       >
-        <RightBottom />
+        <RightBottom ref="rightBottom" />
       </ItemWrap>
     </div>
   </div>
@@ -93,7 +93,16 @@ export default {
 
   mounted() {},
   methods: {
-  
+    handleRegionChange() {
+      // 通知所有子组件更新数据
+      if (this.$refs.leftTop) this.$refs.leftTop.getData();
+      if (this.$refs.leftCenter) this.$refs.leftCenter.getData();
+      if (this.$refs.leftBottom) this.$refs.leftBottom.getData();
+      if (this.$refs.centerBottom) this.$refs.centerBottom.getData();
+      if (this.$refs.rightTop) this.$refs.rightTop.getData();
+      if (this.$refs.rightCenter) this.$refs.rightCenter.getData();
+      if (this.$refs.rightBottom) this.$refs.rightBottom.getData();
+    }
   },
 };
 </script>
